@@ -41,6 +41,25 @@ def read_dwelling_data(filename):
 
     return my_records
 
+def main():
+    ''' Main Function to run the program '''
+    records = read_dwelling_data('Dwellingunitsdownload.csv')
+
+    if records:
+        print ("\nDisplying Dweilling Records: ")
+        print ("=" * 50)
+
+        for record in records:
+            print (f"\nCSDUID: {record.get_csduid()}")
+            print (f"CSD: {record.get_csd()}")
+            print (f"Period: {record.get_period()}")
+            print (f"IndicatorSummaryDescription: {record.get_indicator()}")
+            print (f"Unit Of Measure: {record.get_unit_measure()}")
+            print (f"Original Value: {record.get_original_value()}")
+            print ("_" * 50)
+
+if __name__ == "__main__":
+    main()
 
 
 
