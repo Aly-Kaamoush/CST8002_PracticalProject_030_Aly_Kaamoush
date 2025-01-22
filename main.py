@@ -43,11 +43,12 @@ def read_dwelling_data(filename):
 
 def main():
     ''' Main Function to run the program '''
+    
     records = read_dwelling_data('Dwellingunitsdownload.csv')
 
     if records:
         print ("\nDisplying Dweilling Records: ")
-        print ("=" * 50)
+        print ("=" * 50, "Program by Aly Kaamoush")
 
         for record in records:
             print (f"\nCSDUID: {record.get_csduid()}")
@@ -56,9 +57,10 @@ def main():
             print (f"IndicatorSummaryDescription: {record.get_indicator()}")
             print (f"Unit Of Measure: {record.get_unit_measure()}")
             print (f"Original Value: {record.get_original_value()}")
-            print ("_" * 50)
+            print ("_" * 50, "Program by Aly Kaamoush")
 
 if __name__ == "__main__":
+    ''' Conditional block to run main() method'''
     main()
 
 
