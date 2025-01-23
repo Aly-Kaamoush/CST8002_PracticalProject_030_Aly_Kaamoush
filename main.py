@@ -9,7 +9,10 @@ from dwelling_record import DwellingRecord
 import pandas as pd
 
 def read_dwelling_data(filename):
-    ''' Open the CSV file using File-IO and reading using Panadas API with error handling'''
+    '''
+    Open and read the CSV file using both File-IO and pandas API.
+    Uses error handling for file operations.
+    '''
     my_records = []
 
     try:
@@ -22,7 +25,6 @@ def read_dwelling_data(filename):
             rows = first_few.values.tolist()
 
             for row in rows:
-
                 new_record = DwellingRecord()
 
                 new_record.set_csduid(row[0])
@@ -42,8 +44,14 @@ def read_dwelling_data(filename):
     return my_records
 
 def main():
-    ''' Main Function to run the program '''
-    
+    '''
+    Main function to run the program.
+        
+        to Display author name (always visible),
+        Read CSV data using File-IO and pandas API,
+        Create record objects from data,
+        and Display records with formatting
+    '''    
     records = read_dwelling_data('Dwellingunitsdownload.csv')
 
     if records:
@@ -60,9 +68,8 @@ def main():
             print ("_" * 50, "Program by Aly Kaamoush")
 
 if __name__ == "__main__":
-    ''' Conditional block to run main() method'''
+    ''' Conditional block to run main() function '''
     main()
-
 
 
 

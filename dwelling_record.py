@@ -7,7 +7,9 @@ Description: This file contains the DwellingRecord class for storing and managin
 '''
 
 class DwellingRecord:
-    ''' A class to recrd a single dwelling unit record from the dataset. '''
+    '''A class to represent a single dwelling unit record from the dataset.
+    Uses column names from the CSV file as variable names.
+    '''
     def __init__(self):
         ''' Initializing an empty dwelling constructor with default values.'''
         self._csduid = 0
