@@ -2,9 +2,11 @@
 CST8002 - Programming Language Research Project
 Professor:  Tyler DeLay
 Author: Aly Kaamoush
-Date: January 26, 2025
+Date: February 16, 2025
 Description: This file contains the DwellingRecord class for storing and managing dwelling unit data
 '''
+
+# Part of Model Layer: This class represents the data structure for dwelling records
 
 class DwellingRecord:
     '''A class to represent a single dwelling unit record from the dataset.
