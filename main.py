@@ -20,7 +20,7 @@ def read_dwelling_data(filename):
 
             data = pd.read_csv(filename)
 
-            first_few = data.head()
+            first_few = data.head(1)
 
             rows = first_few.values.tolist()
 
@@ -52,7 +52,7 @@ def main():
         Create record objects from data,
         and Display records with formatting
     '''    
-    records = read_dwelling_data('Dwellingunitsdownload.csv')
+    records = read_dwelling_data('unitsdownload.csv')
 
     if records:
         print ("\nDisplying Dweilling Records: ")
