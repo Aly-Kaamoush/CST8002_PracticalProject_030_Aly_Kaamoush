@@ -7,14 +7,24 @@ Description: Data persistence layer for handling file operations
 '''
 
 import pandas as pd
+import uuid 
 from model.dwelling_record import DwellingRecord
 
 class DataHandler:
+    '''Handles all file operations for the dwelling records system'''
 
     def __init__(self):
+        '''Initialize with the dataset filename'''
         self.filename = 'Dwellingunitsdownload.csv'
 
     def load_data (self, limit=100):
+        '''
+        Load data from CSV file into DwellingRecord objects
+        Args:
+            limit: Maximum number of records to load (default 100)
+        Returns:
+            list of DwellingRecord objects
+        '''
         records = []
         try:
             df = pd.read_csv(self.filename)
@@ -29,6 +39,7 @@ class DataHandler:
                 record.set_unit_measure(row[4])
                 record.set_original_value(row[5])
                 records.append(record)
+
         except FileNotFoundError:
             print(f"Error: Cannot find file {self.filename}")
         except Exception as e:
@@ -37,8 +48,18 @@ class DataHandler:
         return records
     
     def save_data(self, records):
+        '''
+        Save records to a new CSV file with UUID filename
+        Args:
+            records: list of DwellingRecord objects
+        Returns:
+            filename of the saved file
+        '''
+
         try:
-            filename = 'Dwellingunitsdownload.csv'
+            # Generate unique filename using UUID API
+            unique_id = uuid.uuid4() # Generate a unique identifier
+            filename = f"dwelling_data_{unique_id}.csv"
 
             data = []
             for record in records:
