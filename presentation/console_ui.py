@@ -24,8 +24,27 @@ class ConsoleUI:
         print("\nDwelling Records Management System")
         print("1. Reload data from file")
         print("2. Save data to new file")
-        print("3. Exit")
-        print("\nEnter your choice (1-3): ")
+        print("3. Display records")
+        print("4. Exit")
+        print("\nEnter your choice (1-4): ")
+
+    def display_records(self, records):
+        '''Display one or multiple records'''
+        if not records:
+            print("\nNo records to display")
+            return
+            
+        for i, record in enumerate(records):
+            print("\n" + "=" * 50)
+            print(f"{self.author_name}")
+            print("=" * 50)
+            print(f"\nRecord #{i + 1}")
+            print(f"CSDUID: {record.get_csduid()}")
+            print(f"CSD: {record.get_csd()}")
+            print(f"Period: {record.get_period()}")
+            print(f"Indicator: {record.get_indicator()}")
+            print(f"Unit of Measure: {record.get_unit_measure()}")
+            print(f"Original Value: {record.get_original_value()}")
 
     def run(self):
         '''Main application loop'''
@@ -51,8 +70,33 @@ class ConsoleUI:
                     print(f"Data saved to {filename}")
                 else:
                     print("Failed to save data")
-                    
+
             elif choice == '3':
+                print("\nDisplay options:")
+                print("1. Display one record")
+                print("2. Display multiple records")
+                display_choice = input("Enter choice (1-2): ")
+                
+                if display_choice == '1':
+                    try:
+                        index = int(input("Enter record number: ")) - 1
+                        record = self.manager.display_one_record(index)
+                        if record:
+                            self.display_records([record])
+                        else:
+                            print("Record not found")
+                    except ValueError:
+                        print("Invalid input")
+                elif display_choice == '2':
+                    try:
+                        start = int(input("Enter starting record number: ")) - 1
+                        count = int(input("Enter number of records to display: "))
+                        records = self.manager.display_multiple_records(start, count)
+                        self.display_records(records)
+                    except ValueError:
+                        print("Invalid input")
+                    
+            elif choice == '4':
                 print("Thank you for using the system!")
                 break
             
