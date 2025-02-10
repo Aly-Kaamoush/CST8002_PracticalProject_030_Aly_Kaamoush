@@ -23,8 +23,9 @@ class ConsoleUI:
         print("=" * 50)
         print("\nDwelling Records Management System")
         print("1. Reload data from file")
-        print("2. Exit")
-        print("\nEnter your choice (1-2): ")
+        print("2. Save data to new file")
+        print("3. Exit")
+        print("\nEnter your choice (1-3): ")
 
     def run(self):
         '''Main application loop'''
@@ -43,8 +44,15 @@ class ConsoleUI:
                     print("Data reloaded successfully")
                 else:
                     print("Failed to reload data")
-                    
+
             elif choice == '2':
+                filename = self.manager.save_records()
+                if filename:
+                    print(f"Data saved to {filename}")
+                else:
+                    print("Failed to save data")
+                    
+            elif choice == '3':
                 print("Thank you for using the system!")
                 break
             
