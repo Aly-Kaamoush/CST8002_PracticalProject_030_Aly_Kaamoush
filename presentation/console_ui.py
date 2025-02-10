@@ -27,8 +27,9 @@ class ConsoleUI:
         print("2. Save data to new file")
         print("3. Display records")
         print("4. Add new record")
-        print("5. Exit")
-        print("\nEnter your choice (1-5): ")
+        print("5. Edit record")
+        print("6. Exit")
+        print("\nEnter your choice (1-6): ")
 
     def display_records(self, records):
         '''Display one or multiple records'''
@@ -119,8 +120,19 @@ class ConsoleUI:
                     print("Record added successfully")
                 else:
                     print("Failed to add record")
-                    
+
             elif choice == '5':
+                try:
+                    index = int(input("Enter record number to edit: ")) - 1
+                    record = self.get_record_input()
+                    if record and self.manager.edit_record(index, record):
+                        print("Record updated successfully")
+                    else:
+                        print("Failed to update record")
+                except ValueError:
+                    print("Invalid input")
+                    
+            elif choice == '6':
                 print("Thank you for using the system!")
                 break
             
