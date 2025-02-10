@@ -33,9 +33,19 @@ class DwellingManager:
             return self.records[index]
         return None
     
-    def display_all_records(self):
-        '''Get all records to display'''
-        return self.records
+    def display_multiple_records(self, start_index, count):
+        '''
+        Get multiple records to display
+        Args:
+            start_index: Starting position in the list
+            count: Number of records to display
+        Returns:
+            list: Requested records within valid range
+        '''
+        if start_index < 0:
+            start_index = 0
+        end_index = min(start_index + count, len(self.records))
+        return self.records[start_index:end_index]
     
     def add_new_record(self, new_record):
         '''Add a new record to the list'''
