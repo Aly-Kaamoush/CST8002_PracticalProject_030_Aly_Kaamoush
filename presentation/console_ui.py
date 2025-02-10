@@ -28,8 +28,9 @@ class ConsoleUI:
         print("3. Display records")
         print("4. Add new record")
         print("5. Edit record")
-        print("6. Exit")
-        print("\nEnter your choice (1-6): ")
+        print("6. Delete record")
+        print("7. Exit")
+        print("\nEnter your choice (1-7): ")
 
     def display_records(self, records):
         '''Display one or multiple records'''
@@ -131,8 +132,18 @@ class ConsoleUI:
                         print("Failed to update record")
                 except ValueError:
                     print("Invalid input")
-                    
+
             elif choice == '6':
+                try:
+                    index = int(input("Enter record number to delete: ")) - 1
+                    if self.manager.delete_record(index):
+                        print("Record deleted successfully")
+                    else:
+                        print("Failed to delete record")
+                except ValueError:
+                    print("Invalid input")
+                    
+            elif choice == '7':
                 print("Thank you for using the system!")
                 break
             
