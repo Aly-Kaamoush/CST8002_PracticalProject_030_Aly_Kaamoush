@@ -57,8 +57,8 @@ class DataHandler:
         '''
 
         try:
-            # Generate unique filename using UUID API
-            unique_id = uuid.uuid4() # Generate a unique identifier
+            '''Generate unique filename using UUID API'''
+            unique_id = uuid.uuid4() 
             filename = f"dwelling_data_{unique_id}.csv"
 
             data = []
