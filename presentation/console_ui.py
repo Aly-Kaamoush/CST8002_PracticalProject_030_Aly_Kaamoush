@@ -32,7 +32,7 @@ class ConsoleUI:
         print("7. Exit")
         print("\nEnter your choice (1-7): ")
 
-    def display_records(self, records):
+    def display_records(self, records, start_index=0):
         '''Display one or multiple records'''
         if not records:
             print("\nNo records to display")
@@ -42,7 +42,7 @@ class ConsoleUI:
             print("\n" + "=" * 50)
             print(f"{self.author_name}")
             print("=" * 50)
-            print(f"\nRecord #{i + 1}")
+            print(f"\nRecord #{start_index + i+ 1}")
             print(f"CSDUID: {record.get_csduid()}")
             print(f"CSD: {record.get_csd()}")
             print(f"Period: {record.get_period()}")
@@ -101,7 +101,7 @@ class ConsoleUI:
                         index = int(input("Enter record number: ")) - 1
                         record = self.manager.display_one_record(index)
                         if record:
-                            self.display_records([record])
+                            self.display_records([record], start_index=index)
                         else:
                             print("Record not found")
                     except ValueError:
@@ -111,7 +111,7 @@ class ConsoleUI:
                         start = int(input("Enter starting record number: ")) - 1
                         count = int(input("Enter number of records to display: "))
                         records = self.manager.display_multiple_records(start, count)
-                        self.display_records(records)
+                        self.display_records(records, start_index=start)
                     except ValueError:
                         print("Invalid input")
 
