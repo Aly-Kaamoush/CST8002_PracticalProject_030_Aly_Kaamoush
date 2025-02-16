@@ -15,6 +15,7 @@ class TestDwellingSystem(unittest.TestCase):
     
     def test_add_new_record(self):
         '''Test if program correctly adds a new record to data structure'''
+        print("\nProgram by Aly Kaamoush")
         manager = DwellingManager()
         manager.load_records()
         initial_count = len(manager.records)
