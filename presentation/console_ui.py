@@ -46,7 +46,7 @@ class ConsoleUI:
             print(f"CSDUID: {record.get_csduid()}")
             print(f"CSD: {record.get_csd()}")
             print(f"Period: {record.get_period()}")
-            print(f"Indicator: {record.get_indicator()}")
+            print(f"Indicator Summary Description: {record.get_indicator()}")
             print(f"Unit of Measure: {record.get_unit_measure()}")
             print(f"Original Value: {record.get_original_value()}")
 
@@ -62,14 +62,14 @@ class ConsoleUI:
             record.set_original_value(float(input("Enter Original Value: ")))
             return record
         except ValueError:
-            print("Invalid input. Please enter correct data types.")
+            print("\nInvalid input. Please enter correct data types.")
             return None
 
     def run(self):
         '''Main application loop'''
         # Load initial data
         if not self.manager.load_records():
-            print("Warning: Initial data load failed")
+            print("\nWarning: Initial data load failed")
             
         while True:
             self.display_menu()
@@ -79,16 +79,16 @@ class ConsoleUI:
             
             if choice == '1':
                 if self.manager.load_records():
-                    print("Data reloaded successfully")
+                    print("\nData reloaded successfully")
                 else:
-                    print("Failed to reload data")
+                    print("\nFailed to reload data")
 
             elif choice == '2':
                 filename = self.manager.save_records()
                 if filename:
-                    print(f"Data saved to {filename}")
+                    print(f"\nData saved to {filename}")
                 else:
-                    print("Failed to save data")
+                    print("\nFailed to save data")
 
             elif choice == '3':
                 print("\nDisplay options:")
@@ -103,9 +103,9 @@ class ConsoleUI:
                         if record:
                             self.display_records([record], start_index=index)
                         else:
-                            print("Record not found")
+                            print("\nRecord not found")
                     except ValueError:
-                        print("Invalid input")
+                        print("\nInvalid input")
                 elif display_choice == '2':
                     try:
                         start = int(input("Enter starting record number: ")) - 1
@@ -113,41 +113,41 @@ class ConsoleUI:
                         records = self.manager.display_multiple_records(start, count)
                         self.display_records(records, start_index=start)
                     except ValueError:
-                        print("Invalid input")
+                        print("\nInvalid input")
 
             elif choice == '4':
                 record = self.get_record_input()
                 if record and self.manager.add_new_record(record):
-                    print("Record added successfully")
+                    print("\nRecord added successfully")
                 else:
-                    print("Failed to add record")
+                    print("\nFailed to add record")
 
             elif choice == '5':
                 try:
                     index = int(input("Enter record number to edit: ")) - 1
                     record = self.get_record_input()
                     if record and self.manager.edit_record(index, record):
-                        print("Record updated successfully")
+                        print("\nRecord updated successfully")
                     else:
-                        print("Failed to update record")
+                        print("\nFailed to update record")
                 except ValueError:
-                    print("Invalid input")
+                    print("\nInvalid input")
 
             elif choice == '6':
                 try:
                     index = int(input("Enter record number to delete: ")) - 1
                     if self.manager.delete_record(index):
-                        print("Record deleted successfully")
+                        print("\nRecord deleted successfully")
                     else:
-                        print("Failed to delete record")
+                        print("\nFailed to delete record")
                 except ValueError:
-                    print("Invalid input")
+                    print("\nInvalid input")
                     
             elif choice == '7':
-                print("Thank you for using the system!")
+                print("\nThank you for using the system!")
                 break
             
             else:
-                print("Invalid choice. Please try again.")
+                print("\nInvalid choice. Please try again.")
 
     
