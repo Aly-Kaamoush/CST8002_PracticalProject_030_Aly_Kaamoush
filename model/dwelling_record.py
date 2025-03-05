@@ -79,5 +79,46 @@ class DwellingRecord:
                 f"Indicator Summary Description: {self._indicator}\n"
                 f"Unit of Measure: {self._unit_measure}\n"
                 f"Original Value: {self._original_value}")
+    
+class DetailedDwellingRecord(DwellingRecord):
+    '''A specialized class for displaying dwelling records with detailed formatting.
+    Includes additional analysis like percent change or growth indicators.
+    '''
+    def __init__(self):
+        '''Initialize with parent constructor'''
+        super().__init__()
+    
+    def format_for_display(self):
+        '''Override base method to provide detailed formatted view with additional analysis.
+        Returns an enhanced string representation with growth indicators.
+        '''
+        # Calculate growth indicator based on value
+        growth_indicator = "▲ Growing" if self._original_value > 50 else "▼ Declining"
+        
+        # Format with enhanced details and visual indicators
+        return (f"DETAILED RECORD VIEW\n"
+                f"==========================================\n"
+                f"Location ID: {self._csduid} - {self._csd}\n"
+                f"Time Period: {self._period}\n"
+                f"Measurement: {self._indicator}\n"
+                f"Value: {self._original_value:,.2f} {self._unit_measure}\n"
+                f"Status: {growth_indicator}\n"
+                f"==========================================")
+
+
+class SummaryDwellingRecord(DwellingRecord):
+    '''A specialized class for displaying dwelling records in a concise summary format.
+    Shows only essential information.
+    '''
+    def __init__(self):
+        '''Initialize with parent constructor'''
+        super().__init__()
+    
+    def format_for_display(self):
+        '''Override base method to provide a concise summary view.
+        Returns a minimal string representation with core data.
+        '''
+        return (f"SUMMARY: {self._csd} ({self._period}) - {self._indicator}: "
+                f"{self._original_value:,.2f} {self._unit_measure}")
 
 
