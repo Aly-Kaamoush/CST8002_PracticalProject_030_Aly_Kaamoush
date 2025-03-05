@@ -2,8 +2,8 @@
 CST8002 - Programming Language Research Project
 Professor:  Tyler DeLay
 Author: Aly Kaamoush
-Date: February 16, 2025
-Description: This file contains the DwellingRecord class for storing and managing dwelling unit data
+Date: March 16, 2025
+Description: This file contains the base DwellingRecord class and its specialized subclasses
 '''
 
 # Part of Model Layer: This class represents the data structure for dwelling records
@@ -68,5 +68,16 @@ class DwellingRecord:
     def set_original_value(self, value):
         '''Set the original value.'''
         self._original_value = value
+
+    def format_for_display(self):
+        '''Base method to format record for display - will be overridden in subclasses.
+        Returns a formatted string representation of the record.
+        '''
+        return (f"CSDUID: {self._csduid}\n"
+                f"CSD: {self._csd}\n"
+                f"Period: {self._period}\n"
+                f"Indicator Summary Description: {self._indicator}\n"
+                f"Unit of Measure: {self._unit_measure}\n"
+                f"Original Value: {self._original_value}")
 
 
