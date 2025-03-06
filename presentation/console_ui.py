@@ -2,8 +2,8 @@
 CST8002 - Programming Language Research Project
 Professor: Tyler DeLay
 Author: Aly Kaamoush
-Date: February 16, 2025
-Description: Presentation layer for console user interface
+Date: March 16, 2025
+Description: Presentation layer for console user interface with support for polymorphic record display
 '''
 
 from business.dwelling_manager import DwellingManager
@@ -29,11 +29,12 @@ class ConsoleUI:
         print("4. Add new record")
         print("5. Edit record")
         print("6. Delete record")
-        print("7. Exit")
-        print("\nEnter your choice (1-7): ")
+        print("7. Change display format")
+        print("8. Exit")
+        print("\nEnter your choice (1-8): ")
 
     def display_records(self, records, start_index=0):
-        '''Display one or multiple records'''
+        '''Display one or multiple records using polymorphic format_for_display method'''
         if not records:
             print("\nNo records to display")
             return
@@ -42,17 +43,13 @@ class ConsoleUI:
             print("\n" + "=" * 50)
             print(f"{self.author_name}")
             print("=" * 50)
-            print(f"\nRecord #{start_index + i+ 1}")
-            print(f"CSDUID: {record.get_csduid()}")
-            print(f"CSD: {record.get_csd()}")
-            print(f"Period: {record.get_period()}")
-            print(f"Indicator Summary Description: {record.get_indicator()}")
-            print(f"Unit of Measure: {record.get_unit_measure()}")
-            print(f"Original Value: {record.get_original_value()}")
+            print(f"\nRecord #{start_index + i + 1}")
+            # Use polymorphic method instead of individual field display
+            print(record.format_for_display())
 
     def get_record_input(self):
         '''Get user input for record fields'''
-        record = DwellingRecord()
+        record = DwellingRecord()  # Use base class for user input
         try:
             record.set_csduid(int(input("Enter CSDUID: ")))
             record.set_csd(input("Enter CSD: "))
@@ -64,6 +61,27 @@ class ConsoleUI:
         except ValueError:
             print("\nInvalid input. Please enter correct data types.")
             return None
+
+    def change_display_format(self):
+        '''Allow user to change the display format'''
+        print("\nChoose display format:")
+        print("1. Standard (Default)")
+        print("2. Detailed")
+        print("3. Summary")
+        
+        choice = input("Enter choice (1-3): ").strip()
+        
+        if choice == "1":
+            self.manager.set_display_mode("standard")
+            print("\nDisplay format set to Standard")
+        elif choice == "2":
+            self.manager.set_display_mode("detailed")
+            print("\nDisplay format set to Detailed")
+        elif choice == "3":
+            self.manager.set_display_mode("summary")
+            print("\nDisplay format set to Summary")
+        else:
+            print("\nInvalid choice. Format unchanged.")
 
     def run(self):
         '''Main application loop'''
@@ -142,8 +160,11 @@ class ConsoleUI:
                         print("\nFailed to delete record")
                 except ValueError:
                     print("\nInvalid input")
-                    
+            
             elif choice == '7':
+                self.change_display_format()
+                    
+            elif choice == '8':
                 print("\nThank you for using the system!")
                 break
             
