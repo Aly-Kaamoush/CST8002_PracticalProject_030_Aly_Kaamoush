@@ -9,7 +9,7 @@ Description: This file contains the base DwellingRecord class and its specialize
 # Part of Model Layer: This class represents the data structure for dwelling records
 
 class DwellingRecord:
-    '''A class to represent a single dwelling unit record from the dataset.
+    '''A base class to represent a single dwelling unit record from the dataset.
     Uses column names from the CSV file as variable names.
     '''
     def __init__(self):
@@ -81,7 +81,7 @@ class DwellingRecord:
                 f"Original Value: {self._original_value}")
     
 class DetailedDwellingRecord(DwellingRecord):
-    '''A specialized class for displaying dwelling records with detailed formatting.
+    '''A specialized class (Sub-Class) for displaying dwelling records with detailed formatting.
     Includes additional analysis like percent change or growth indicators.
     '''
     def __init__(self):
@@ -107,7 +107,7 @@ class DetailedDwellingRecord(DwellingRecord):
 
 
 class SummaryDwellingRecord(DwellingRecord):
-    '''A specialized class for displaying dwelling records in a concise summary format.
+    '''A specialized class (Sub-Class) for displaying dwelling records in a concise summary format.
     Shows only essential information.
     '''
     def __init__(self):
