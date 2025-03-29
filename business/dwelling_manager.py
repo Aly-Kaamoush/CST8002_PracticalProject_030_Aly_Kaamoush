@@ -131,35 +131,33 @@ class DwellingManager:
         if not self.records:
             return [], []
         
-        # Map field names to getter methods
-        field_getters = {
-            'csduid': lambda record: record.get_csduid(),
-            'csd': lambda record: record.get_csd(),
-            'period': lambda record: record.get_period(),
-            'indicator': lambda record: record.get_indicator(),
-            'unit_measure': lambda record: record.get_unit_measure(),
-            'original_value': lambda record: record.get_original_value()
-        }
-        
-        if field_name not in field_getters:
-            return [], []
-        
         # Special case for visualizing original_value directly
         if field_name == 'original_value':
-            # Group by indicator instead when visualizing values
+            # For original value, we should group by something meaningful
+            # Let's try grouping by period (year) or by CSD (location)
+            group_by_field = 'period'  # You could also use 'csd' here
+            
             field_values = {}
             for record in self.records:
-                key = record.get_indicator()
-                if key and key != '':  # Skip empty keys
+                # Get the grouping key
+                if group_by_field == 'period':
+                    key = record.get_period()
+                else:  # group by csd
+                    key = record.get_csd()
+                    
+                if key is not None and key != '' and key != 0:
                     if key not in field_values:
                         field_values[key] = []
                     value = record.get_original_value()
                     if value is not None:
                         field_values[key].append(value)
             
+            # Sort keys (convert to strings for comparison if needed)
+            sorted_keys = sorted(field_values.keys())
+            
             labels = []
             values = []
-            for key in sorted(field_values.keys()):
+            for key in sorted_keys:
                 if field_values[key]:  # Only include if there are values
                     labels.append(str(key))
                     values.append(sum(field_values[key]) / len(field_values[key]))
@@ -167,11 +165,23 @@ class DwellingManager:
             return labels, values
         
         # For other fields - group records by the selected field
+        field_getters = {
+            'csduid': lambda record: record.get_csduid(),
+            'csd': lambda record: record.get_csd(),
+            'period': lambda record: record.get_period(),
+            'indicator': lambda record: record.get_indicator(),
+            'unit_measure': lambda record: record.get_unit_measure()
+        }
+        
+        if field_name not in field_getters:
+            return [], []
+        
+        # Group records by the selected field
         field_values = {}
         for record in self.records:
             key = field_getters[field_name](record)
             # Skip empty or None keys
-            if key is None or key == '':
+            if key is None or key == '' or key == 0:
                 continue
                 
             if key not in field_values:
