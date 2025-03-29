@@ -30,8 +30,9 @@ class ConsoleUI:
         print("5. Edit record")
         print("6. Delete record")
         print("7. Change display format")
-        print("8. Exit")
-        print("\nEnter your choice (1-8): ")
+        print("8. Visualize data")
+        print("9. Exit")
+        print("\nEnter your choice (1-9): ")
 
     def display_records(self, records, start_index=0):
         '''Display one or multiple records using polymorphic format_for_display method'''
@@ -82,6 +83,82 @@ class ConsoleUI:
             print("\nDisplay format set to Summary")
         else:
             print("\nInvalid choice. Format unchanged.")
+
+    def display_visualization_menu(self):
+        '''Display the visualization menu'''
+
+        print("\n" + "=" * 50)
+        print(self.author_name)
+        print("=" * 50)
+        print("\nVisualization Options")
+        print("1. Vertical Bar Chart")
+        print("2. Horizontal Bar Chart")
+        print("3. Return to Main Menu")
+        print("\nEnter your choice (1-3): ")
+
+    def handle_visualization(self):
+        '''Handle visualization functionality'''
+
+        from presentation.visualization import ChartGenerator
+        
+        # Check if we have data to visualize
+        if not self.manager.records:
+            print("\nNo data available for visualization. Please load data first.")
+            return
+            
+        while True:
+            self.display_visualization_menu()
+            choice = input().strip()
+            
+            print(f"\n{self.author_name}")
+            
+            if choice == '1' or choice == '2':
+                # Get field to visualize
+                fields = self.manager.get_visualization_options()
+                print("\nSelect field to visualize:")
+                for i, field in enumerate(fields):
+                    display_name = self.manager.get_field_display_name(field)
+                    print(f"{i+1}. {display_name}")
+                
+                try:
+                    field_choice = int(input("Enter choice (1-5): ")) - 1
+                    if field_choice < 0 or field_choice >= len(fields):
+                        print("\nInvalid choice")
+                        continue
+                        
+                    selected_field = fields[field_choice]
+                    display_name = self.manager.get_field_display_name(selected_field)
+                    
+                    # Get data for visualization
+                    labels, values = self.manager.get_data_for_visualization(selected_field)
+                    
+                    if not labels or not values:
+                        print("\nNo data available for the selected field")
+                        continue
+                    
+                    # Create chart
+                    chart_generator = ChartGenerator()
+                    title = f"Average Values by {display_name}"
+                    x_label = display_name
+                    y_label = "Average Value"
+                    
+                    if choice == '1':
+                        # Vertical bar chart
+                        chart_generator.create_vertical_bar_chart(
+                            labels, values, title, x_label, y_label)
+                    else:
+                        # Horizontal bar chart
+                        chart_generator.create_horizontal_bar_chart(
+                            labels, values, title, y_label, x_label)
+                    
+                except ValueError:
+                    print("\nInvalid input. Please enter a number.")
+                
+            elif choice == '3':
+                break
+            
+            else:
+                print("\nInvalid choice. Please try again.")
 
     def run(self):
         '''Main application loop'''
@@ -165,6 +242,9 @@ class ConsoleUI:
                 self.change_display_format()
                     
             elif choice == '8':
+                self.handle_visualization()
+            
+            elif choice == '9':
                 print("\nThank you for using the system!")
                 break
             
