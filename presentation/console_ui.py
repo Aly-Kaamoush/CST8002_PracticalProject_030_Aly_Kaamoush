@@ -141,12 +141,12 @@ class ConsoleUI:
                     
                     # Customize title based on whether we're visualizing original values directly
                     if selected_field == 'original_value':
-                        title = f"Average Values by Indicator"
-                        x_label = "Indicator"
+                        title = f"Average Dwelling Values by Year"
+                        x_label = "Year"
                     else:
                         title = f"Average Values by {display_name}"
                         x_label = display_name
-                    
+
                     y_label = "Average Value"
                     
                     if choice == '1':
