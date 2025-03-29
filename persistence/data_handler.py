@@ -17,7 +17,7 @@ class DataHandler:
         '''Initialize with the dataset filename'''
         self.filename = 'Dwellingunitsdownload.csv'
 
-    def load_data (self, limit=100):
+    def load_data (self):
         '''
         Load data from CSV file into DwellingRecord objects
         Args:
@@ -28,7 +28,7 @@ class DataHandler:
         records = []
         try:
             df = pd.read_csv(self.filename)
-            data = df.head(limit).values.tolist()
+            data = df.values.tolist()
 
             for row in data:
                 record = DwellingRecord()
