@@ -98,7 +98,7 @@ class ConsoleUI:
 
     def handle_visualization(self):
         '''Handle visualization functionality'''
-
+        
         from presentation.visualization import ChartGenerator
         
         # Check if we have data to visualize
@@ -121,7 +121,7 @@ class ConsoleUI:
                     print(f"{i+1}. {display_name}")
                 
                 try:
-                    field_choice = int(input("Enter choice (1-5): ")) - 1
+                    field_choice = int(input(f"Enter choice (1-{len(fields)}): ")) - 1
                     if field_choice < 0 or field_choice >= len(fields):
                         print("\nInvalid choice")
                         continue
@@ -133,13 +133,20 @@ class ConsoleUI:
                     labels, values = self.manager.get_data_for_visualization(selected_field)
                     
                     if not labels or not values:
-                        print("\nNo data available for the selected field")
+                        print(f"\nNo data available for visualization with {display_name}. The field may be empty in your dataset.")
                         continue
                     
                     # Create chart
                     chart_generator = ChartGenerator()
-                    title = f"Average Values by {display_name}"
-                    x_label = display_name
+                    
+                    # Customize title based on whether we're visualizing original values directly
+                    if selected_field == 'original_value':
+                        title = f"Average Values by Indicator"
+                        x_label = "Indicator"
+                    else:
+                        title = f"Average Values by {display_name}"
+                        x_label = display_name
+                    
                     y_label = "Average Value"
                     
                     if choice == '1':
