@@ -144,19 +144,48 @@ class DwellingManager:
         if field_name not in field_getters:
             return [], []
         
-        # Group records by the selected field
+        # Special case for visualizing original_value directly
+        if field_name == 'original_value':
+            # Group by indicator instead when visualizing values
+            field_values = {}
+            for record in self.records:
+                key = record.get_indicator()
+                if key and key != '':  # Skip empty keys
+                    if key not in field_values:
+                        field_values[key] = []
+                    value = record.get_original_value()
+                    if value is not None:
+                        field_values[key].append(value)
+            
+            labels = []
+            values = []
+            for key in sorted(field_values.keys()):
+                if field_values[key]:  # Only include if there are values
+                    labels.append(str(key))
+                    values.append(sum(field_values[key]) / len(field_values[key]))
+            
+            return labels, values
+        
+        # For other fields - group records by the selected field
         field_values = {}
         for record in self.records:
             key = field_getters[field_name](record)
+            # Skip empty or None keys
+            if key is None or key == '':
+                continue
+                
             if key not in field_values:
                 field_values[key] = []
-            field_values[key].append(record.get_original_value())
+                
+            value = record.get_original_value()
+            if value is not None:
+                field_values[key].append(value)
         
         # Calculate average for each group
         labels = []
         values = []
         for key in sorted(field_values.keys()):
-            if key and key != '':  # Skip empty keys
+            if field_values[key]:  # Only include if there are values
                 labels.append(str(key))
                 values.append(sum(field_values[key]) / len(field_values[key]))
         
@@ -169,7 +198,7 @@ class DwellingManager:
         Returns:
             list: Names of fields available for visualization
         '''
-        return ['csduid', 'csd', 'period', 'indicator', 'unit_measure']
+        return ['csduid', 'csd', 'period', 'indicator', 'unit_measure', 'original_value']
 
     def get_field_display_name(self, field_name):
         '''
@@ -182,12 +211,12 @@ class DwellingManager:
             str: Display-friendly field name
         '''
         display_names = {
-            'csduid': 'Census Subdivision ID',
-            'csd': 'Census Subdivision',
-            'period': 'Time Period',
-            'indicator': 'Indicator',
+            'csduid': 'Census Subdivision ID (csduid)',
+            'csd': 'Census Subdivision (csd)',
+            'period': 'Time Period (period)',
+            'indicator': 'IndicatorSummaryDescription',
             'unit_measure': 'Unit of Measure',
-            'original_value': 'Value'
+            'original_value': 'Original Value'
         }
         
         return display_names.get(field_name, field_name)
