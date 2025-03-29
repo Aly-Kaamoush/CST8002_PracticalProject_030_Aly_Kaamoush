@@ -131,36 +131,48 @@ class DwellingManager:
         if not self.records:
             return [], []
         
-        # Special case for visualizing original_value directly
+        # Special case for visualizing original values by period
         if field_name == 'original_value':
-            # For original value, we should group by something meaningful
-            # Let's try grouping by period (year) or by CSD (location)
-            group_by_field = 'period'  # You could also use 'csd' here
-            
-            field_values = {}
+            # Group by period to show value trends over time
+            period_values = {}
             for record in self.records:
-                # Get the grouping key
-                if group_by_field == 'period':
-                    key = record.get_period()
-                else:  # group by csd
-                    key = record.get_csd()
-                    
-                if key is not None and key != '' and key != 0:
-                    if key not in field_values:
-                        field_values[key] = []
+                period = record.get_period()
+                if period and period != 0:  # Skip empty periods
+                    if period not in period_values:
+                        period_values[period] = []
                     value = record.get_original_value()
                     if value is not None:
-                        field_values[key].append(value)
+                        period_values[period].append(value)
             
-            # Sort keys (convert to strings for comparison if needed)
-            sorted_keys = sorted(field_values.keys())
+            # Sort periods numerically
+            sorted_periods = sorted(period_values.keys())
             
             labels = []
             values = []
-            for key in sorted_keys:
-                if field_values[key]:  # Only include if there are values
-                    labels.append(str(key))
-                    values.append(sum(field_values[key]) / len(field_values[key]))
+            for period in sorted_periods:
+                if period_values[period]:  # Only include if there are values
+                    labels.append(str(period))
+                    avg_value = sum(period_values[period]) / len(period_values[period])
+                    values.append(avg_value)
+            
+            return labels, values
+        
+        # For comparison of periods by other fields
+        elif field_name == 'period':
+            # Count number of records by period
+            period_counts = {}
+            for record in self.records:
+                period = record.get_period()
+                if period and period != 0:  # Skip empty periods
+                    if period not in period_counts:
+                        period_counts[period] = 0
+                    period_counts[period] += 1
+            
+            # Sort periods numerically
+            sorted_periods = sorted(period_counts.keys())
+            
+            labels = [str(period) for period in sorted_periods]
+            values = [period_counts[period] for period in sorted_periods]
             
             return labels, values
         
@@ -168,7 +180,6 @@ class DwellingManager:
         field_getters = {
             'csduid': lambda record: record.get_csduid(),
             'csd': lambda record: record.get_csd(),
-            'period': lambda record: record.get_period(),
             'indicator': lambda record: record.get_indicator(),
             'unit_measure': lambda record: record.get_unit_measure()
         }
@@ -181,7 +192,7 @@ class DwellingManager:
         for record in self.records:
             key = field_getters[field_name](record)
             # Skip empty or None keys
-            if key is None or key == '' or key == 0:
+            if key is None or key == '':
                 continue
                 
             if key not in field_values:

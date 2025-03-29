@@ -98,7 +98,6 @@ class ConsoleUI:
 
     def handle_visualization(self):
         '''Handle visualization functionality'''
-        
         from presentation.visualization import ChartGenerator
         
         # Check if we have data to visualize
@@ -139,15 +138,19 @@ class ConsoleUI:
                     # Create chart
                     chart_generator = ChartGenerator()
                     
-                    # Customize title based on whether we're visualizing original values directly
+                    # Customize title and labels based on the field
                     if selected_field == 'original_value':
-                        title = f"Average Dwelling Values by Year"
+                        title = "Average Values by Year"
                         x_label = "Year"
+                        y_label = "Average Value"
+                    elif selected_field == 'period':
+                        title = "Number of Records by Year"
+                        x_label = "Year"
+                        y_label = "Number of Records"
                     else:
                         title = f"Average Values by {display_name}"
                         x_label = display_name
-
-                    y_label = "Average Value"
+                        y_label = "Average Value"
                     
                     if choice == '1':
                         # Vertical bar chart
