@@ -2,7 +2,7 @@
 CST8002 - Programming Language Research Project
 Professor: Tyler DeLay
 Author: Aly Kaamoush
-Date: March 16, 2025
+Date: April 6, 2025
 Description: Business layer for managing dwelling records operations with polymorphism support
 '''
 from persistence.data_handler import DataHandler
@@ -117,3 +117,77 @@ class DwellingManager:
             self.records.pop(index)
             return True
         return False
+    
+    def get_data_for_visualization(self, field_name):
+        '''
+        Process data for visualization based on a selected field
+        
+        Args:
+            field_name: Name of the field to visualize (e.g., 'period', 'csduid')
+        
+        Returns:
+            tuple: (labels, values) for chart generation
+        '''
+        if not self.records:
+            return [], []
+        
+        # Map field names to getter methods
+        field_getters = {
+            'csduid': lambda record: record.get_csduid(),
+            'csd': lambda record: record.get_csd(),
+            'period': lambda record: record.get_period(),
+            'indicator': lambda record: record.get_indicator(),
+            'unit_measure': lambda record: record.get_unit_measure(),
+            'original_value': lambda record: record.get_original_value()
+        }
+        
+        if field_name not in field_getters:
+            return [], []
+        
+        # Group records by the selected field
+        field_values = {}
+        for record in self.records:
+            key = field_getters[field_name](record)
+            if key not in field_values:
+                field_values[key] = []
+            field_values[key].append(record.get_original_value())
+        
+        # Calculate average for each group
+        labels = []
+        values = []
+        for key in sorted(field_values.keys()):
+            if key and key != '':  # Skip empty keys
+                labels.append(str(key))
+                values.append(sum(field_values[key]) / len(field_values[key]))
+        
+        return labels, values
+
+    def get_visualization_options(self):
+        '''
+        Get available fields for visualization
+        
+        Returns:
+            list: Names of fields available for visualization
+        '''
+        return ['csduid', 'csd', 'period', 'indicator', 'unit_measure']
+
+    def get_field_display_name(self, field_name):
+        '''
+        Get a display-friendly name for a field
+        
+        Args:
+            field_name: Technical field name
+        
+        Returns:
+            str: Display-friendly field name
+        '''
+        display_names = {
+            'csduid': 'Census Subdivision ID',
+            'csd': 'Census Subdivision',
+            'period': 'Time Period',
+            'indicator': 'Indicator',
+            'unit_measure': 'Unit of Measure',
+            'original_value': 'Value'
+        }
+        
+        return display_names.get(field_name, field_name)
