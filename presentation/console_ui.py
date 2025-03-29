@@ -93,8 +93,9 @@ class ConsoleUI:
         print("\nVisualization Options")
         print("1. Vertical Bar Chart")
         print("2. Horizontal Bar Chart")
-        print("3. Return to Main Menu")
-        print("\nEnter your choice (1-3): ")
+        print("3. Line Chart (best for time trends)")
+        print("4. Return to Main Menu")
+        print("\nEnter your choice (1-4): ")
 
     def handle_visualization(self):
         '''Handle visualization functionality'''
@@ -111,7 +112,7 @@ class ConsoleUI:
             
             print(f"\n{self.author_name}")
             
-            if choice == '1' or choice == '2':
+            if choice == '1' or choice == '2' or choice == '3':
                 # Get field to visualize
                 fields = self.manager.get_visualization_options()
                 print("\nSelect field to visualize:")
@@ -151,20 +152,25 @@ class ConsoleUI:
                         title = f"Average Values by {display_name}"
                         x_label = display_name
                         y_label = "Average Value"
-                    
+
+                    # Create chart based on choice
                     if choice == '1':
                         # Vertical bar chart
                         chart_generator.create_vertical_bar_chart(
                             labels, values, title, x_label, y_label)
-                    else:
+                    elif choice == '2':
                         # Horizontal bar chart
                         chart_generator.create_horizontal_bar_chart(
                             labels, values, title, y_label, x_label)
+                    elif choice == '3':
+                        # Line chart - great for showing trends over time
+                        chart_generator.create_line_chart(
+                            labels, values, title, x_label, y_label)
                     
                 except ValueError:
                     print("\nInvalid input. Please enter a number.")
                 
-            elif choice == '3':
+            elif choice == '4':
                 break
             
             else:
