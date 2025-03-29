@@ -64,6 +64,31 @@ class ChartGenerator:
         
         # Display the chart
         plt.show()
+
+    def create_line_chart(self, labels, values, title, x_label, y_label):
+        '''
+        Create and display a line chart
+        
+        Args:
+            labels: List of labels for x-axis
+            values: List of values for y-axis
+            title: Chart title
+            x_label: Label for x-axis
+            y_label: Label for y-axis
+        '''
+        plt.figure(figsize=(10, 6))
+        plt.plot(labels, values, marker='o', linestyle='-', color='blue')
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.title(title)
+        plt.grid(True, linestyle='--', alpha=0.7)
+        plt.tight_layout()
+        
+        # Add author name as a footer
+        plt.figtext(0.5, 0.01, self.author_name, ha='center', fontsize=10)
+        
+        # Display the chart
+        plt.show()
     
     def save_chart(self, filename):
         '''
@@ -75,4 +100,5 @@ class ChartGenerator:
         plt.savefig(filename)
         plt.close()
         return filename
+    
 
